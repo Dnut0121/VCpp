@@ -185,7 +185,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     // 扩档快 积己
     HWND hwnd = CreateWindow(
         wc.lpszClassName,
-        TEXT("哪家 Application"),
+        TEXT("202007018 价盔籍"),
         WS_OVERLAPPEDWINDOW,
         0, 0,
         width, height,
