@@ -112,7 +112,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hwnd, &ps);
-        HDC hdc = GetDC(hwnd);
         // 클라이언트 영역 초기화
         RECT clientRect;
         GetClientRect(hwnd, &clientRect);
@@ -177,7 +176,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     }
 
     // Window viewport 영역 조정
-    RECT rect = { 150, 100, 1320, 800 };
+    RECT rect = { 150, 100, 800, 600 };
     AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, 0);
     int width = rect.right - rect.left;
     int height = rect.bottom - rect.top;
