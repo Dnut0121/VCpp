@@ -1,4 +1,3 @@
-
 #ifdef UNICODE
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
 #else
@@ -16,10 +15,10 @@ int isDrawing = 0;          // 사각형 그리기 모드
 int isMoving = 0;           // 사각형 이동 모드
 int offsetX = 0;            // 이동할 때 x 좌표 변화량
 int offsetY = 0;            // 이동할 때 y 좌표 변화량
-
+INT box = 0;                // 임시저장 변수
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    
+
     switch (uMsg)
     {
     case WM_LBUTTONDOWN:
@@ -47,10 +46,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             // 선택한 사각형 이동
             if (selectedRectangle >= 0 && selectedRectangle < numRectangles)
             {
+                startPoint.x = rectangles[selectedRectangle].left;
+                startPoint.y = rectangles[selectedRectangle].top;
+                endPoint.x = rectangles[selectedRectangle].right;
+                endPoint.y = rectangles[selectedRectangle].bottom;
                 rectangles[selectedRectangle].left = mouseX - offsetX;
                 rectangles[selectedRectangle].top = mouseY - offsetY;
-                rectangles[selectedRectangle].right = rectangles[selectedRectangle].left +(endPoint.x - startPoint.x);
-                rectangles[selectedRectangle].bottom = rectangles[selectedRectangle].top +(endPoint.y - startPoint.y);
+                rectangles[selectedRectangle].right = rectangles[selectedRectangle].left + (endPoint.x - startPoint.x);
+                rectangles[selectedRectangle].bottom = rectangles[selectedRectangle].top + (endPoint.y - startPoint.y);
                 InvalidateRect(hwnd, NULL, TRUE); // 화면 갱신
             }
         }
@@ -64,6 +67,17 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             endPoint.y = HIWORD(lParam);
             isDrawing = 0; // 그리기 모드 종료
             // 새로운 사각형을 배열에 추가
+            if (startPoint.x > endPoint.x) {
+                box = startPoint.x;
+                startPoint.x = endPoint.x;
+                endPoint.x = box;
+            }
+            if (startPoint.y > endPoint.y) {
+                int box2 = startPoint.y;
+                startPoint.y = endPoint.y;
+                endPoint.y = box2;
+            }
+
             if (numRectangles < 100)
             {
                 rectangles[numRectangles].left = startPoint.x;
@@ -72,7 +86,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 rectangles[numRectangles].bottom = endPoint.y;
                 numRectangles++;
             }
-           // GetClientRect(hwnd, NULL, TRUE);
             InvalidateRect(hwnd, NULL, TRUE); // 화면 갱신
         }
         break;
@@ -135,7 +148,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 Rectangle(hdc, rectangles[i].left, rectangles[i].top, rectangles[i].right, rectangles[i].bottom);
             }
         }
-        
+
         EndPaint(hwnd, &ps);
     }
     break;
