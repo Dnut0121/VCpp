@@ -147,14 +147,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         GetClientRect(hwnd, &clientRect);
         FillRect(hdc, &clientRect, (HBRUSH)(COLOR_WINDOW + 1));
 
+        hBrush = CreateSolidBrush(RGB(255, 0, 255)); // 핑크색
         RECT rect2 = { startPoint2.x, startPoint2.y, endPoint2.x, endPoint2.y };
-        hBrush = CreateSolidBrush(RGB(255, 0, 255)); // Green brush
-        FillRect(hdc, &rect2, hBrush); // Draw the second rectangle
+        FillRect(hdc, &rect2, hBrush); 
         DeleteObject(hBrush);
 
-        hBrush = CreateSolidBrush(RGB(0, 0, 255)); // Pink brush
+        hBrush = CreateSolidBrush(RGB(0, 0, 255)); // 파란색
         RECT rect1 = { startPoint1.x, startPoint1.y, endPoint1.x, endPoint1.y };
-        FillRect(hdc, &rect1, hBrush); // Draw the first rectangle
+        FillRect(hdc, &rect1, hBrush); 
         DeleteObject(hBrush);
        
 
